@@ -71,9 +71,9 @@ module.exports = class LightHouseReportManager {
     table += `<a href="https://circleci.com/api/v1.1/project/github/${
       process.env.CIRCLE_PROJECT_USERNAME
     }/${
-      process.env.$CIRCLE_PROJECT_REPONAME
+      process.env.CIRCLE_PROJECT_REPONAME
     }/${
-      process.env.$CIRCLE_BUILD_NUM
+      process.env.CIRCLE_BUILD_NUM
     }/artifacts/0/home/circleci/project/home/report.report.html">View full lighthouse report</a>`;
 
     return table;
