@@ -11,8 +11,10 @@ module.exports = class LightHouseReportManager {
         const child = spawn("node", [
           BIN_PATH,
           url,
-          "--output=json",
-          '--chrome-flags="--headless"'
+          '--output=json',
+          '--output=html',
+          '--output-path ./report.html',
+          '--chrome-flags="--headless"',
         ]);
         let report = "";
         let counter = 0;
@@ -78,6 +80,11 @@ module.exports = class LightHouseReportManager {
     table += `
 </details>
     `
+    table += `<a href="https://circleci.com/api/v1.1/project/github/pigmice2733/${
+      process.env.$CIRCLE_PROJECT_REPONAME
+    }/${
+      process.env.$CIRCLE_BUILD_NUM
+    }/artifacts/0/home/circleci/project/home/">View full lighthouse report</a>`;
 
     return table;
   }
