@@ -9,14 +9,18 @@ module.exports = class LightHouseReportManager {
 
     const lighthouseReports = urls.map(url => {
       return new Promise((resolve, reject) => {
-        const child = spawn("node", [
-          BIN_PATH,
-          url,
-          '--output=json',
-          '--output=html',
-          '--output-path ./report.html',
-          '--chrome-flags="--headless"',
-        ]);
+        const child = spawn(
+          "node",
+          [
+            BIN_PATH,
+            url,
+            '--output=json',
+            '--output=html',
+            '--output-path ./report.html',
+            '--chrome-flags="--headless"',
+          ],
+          { stdio: 'inherit' }
+        );
 
         child.on("close", code => {
           const report = fs.readFileSync('report.report.json', 'utf8')
