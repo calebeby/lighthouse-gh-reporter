@@ -1,5 +1,6 @@
 /* eslint-disable */
 const {spawn} = require('child_process')
+const fs = require('fs')
 const BIN_PATH = require.resolve('lighthouse/lighthouse-cli/index.js')
 
 module.exports = class LightHouseReportManager {
@@ -16,24 +17,11 @@ module.exports = class LightHouseReportManager {
           '--output-path ./report.html',
           '--chrome-flags="--headless"',
         ]);
-        let report = "";
         let counter = 0;
-        // use child.stdout.setEncoding('utf8'); if you want text chunks
-        child.stdout.on("data", chunk => {
-          // data from standard output is here as buffers
-          report += chunk.toString();
-        });
 
         child.on("close", code => {
-          if(report){
-          !code
-            ? resolve({
-                report: JSON.parse(report)
-              })
-            : resolve({ report: JSON.parse(report) });
-            } else {
-              reject(new Error('No report was generated, this may be caused because the url can be accesed. Is your url a accesible?'))
-            }
+          const report = fs.readFileSync('report.report.json', 'utf8')
+          resolve({ report: JSON.parse(report) });
         });
       })
     })
@@ -80,11 +68,13 @@ module.exports = class LightHouseReportManager {
     table += `
 </details>
     `
-    table += `<a href="https://circleci.com/api/v1.1/project/github/pigmice2733/${
+    table += `<a href="https://circleci.com/api/v1.1/project/github/${
+      process.env.CIRCLE_PROJECT_USERNAME
+    }/${
       process.env.$CIRCLE_PROJECT_REPONAME
     }/${
       process.env.$CIRCLE_BUILD_NUM
-    }/artifacts/0/home/circleci/project/home/">View full lighthouse report</a>`;
+    }/artifacts/0/home/circleci/project/home/report.report.html">View full lighthouse report</a>`;
 
     return table;
   }
