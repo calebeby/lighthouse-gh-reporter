@@ -16,7 +16,7 @@ module.exports = class LightHouseReportManager {
             url,
             '--output=json',
             '--output=html',
-            '--output-path ./report.html',
+            '--output-path=./report.html',
             '--chrome-flags="--headless"',
           ],
           { stdio: 'inherit' }
