@@ -17,7 +17,6 @@ module.exports = class LightHouseReportManager {
           '--output-path ./report.html',
           '--chrome-flags="--headless"',
         ]);
-        let counter = 0;
 
         child.on("close", code => {
           const report = fs.readFileSync('report.report.json', 'utf8')
